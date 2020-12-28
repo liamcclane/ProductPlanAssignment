@@ -1,0 +1,11 @@
+.underBars {
+    /* z-index: 2; */
+    background-color: aquamarine;
+    display: flex;
+    margin-left: 20px;
+    min-height: 100px;
+}
+.dateMarker {
+    border-left: 3px solid green;
+    height: 100%;
+}

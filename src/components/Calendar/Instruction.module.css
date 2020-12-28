@@ -1,0 +1,9 @@
+.alertBox {
+    background-color: purple;
+    z-index: 100;
+    position: relative;
+    top: 20px;
+    left: 400px;
+    border: 1px solid red;
+    min-height: 500px;
+}

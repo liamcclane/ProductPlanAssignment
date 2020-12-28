@@ -23,7 +23,13 @@
     background-color: white;
     min-height: 150px;
     margin-bottom: 50px;
-    margin-left: 50px;
+    margin-left: 40px;
+    display: flex;
+    flex-direction: column;
+}
+.lane-markers {
+    margin-left: 60px;
+    display: flex;
 }
 .dropHere {
     text-align: center;
