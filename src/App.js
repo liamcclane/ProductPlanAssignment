@@ -19,5 +19,3 @@ function App() {
 }
 
 export default App;
-
-{/* <div className="lane dropHere">Drop Here</div> */ }

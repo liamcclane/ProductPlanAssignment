@@ -6,7 +6,7 @@
     --ppBarLineColor: #ECEFF1;
 }
 .wrapper * {
-    outline: 1px dotted red;
+    /* outline: 1px dotted red; */
 }
 .main {
     display: flex;
@@ -53,4 +53,8 @@
 .dropHere {
     text-align: center;
     border: 2px dotted black;
+    background-color: black;
+}
+.shake {
+    background-color: red;
 }

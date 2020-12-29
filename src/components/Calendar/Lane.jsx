@@ -3,10 +3,17 @@ import React from 'react';
 import Marker from './Marker';
 import CSSClasses from './Lane.module.css';
 
-export default ({ title, bars, dates }) => {
+export default ({ title, laneId, dates, bars, onDragEnter }) => {
 
-    return (
-        <div className={["lane", "border", "rounded"].join(" ")}>
+    console.log("title", title);
+    let content;
+
+    if (title === "lane") {
+        content = (<div className="lane dropHere">
+            Drop Here
+        </div>);
+    } else {
+        content = (<div className="lane">
             <div className={CSSClasses.laneHeader}>
                 <div className={CSSClasses.triangle}></div>
                 {title}
@@ -21,14 +28,14 @@ export default ({ title, bars, dates }) => {
                 </div>
                 <div className={CSSClasses.overBars}>
                     {bars.map((ele, ind) => {
-                        const barStyle = {minWidth: "200px", height: "50px"};
+                        const barStyle = { minWidth: "200px", height: "50px" };
                         return (
                             <div style={barStyle} className={CSSClasses.bar} key={ind}>A am a Bar, Start: {ele.start} and End: {ele.end}</div>
                         );
                     })}
                 </div>
             </div>
-        </div>
-    )
-
+        </div>);
+    }
+    return content;
 };

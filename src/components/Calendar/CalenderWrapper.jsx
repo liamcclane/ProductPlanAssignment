@@ -20,57 +20,46 @@ export default props => {
         { "date": "2021-9" },
         { "date": "2021-10", "quarterMarker": "Q4 2021" },
     ];
-    const blankNewLane = { "title": "Lane", "bars": [] };
     const [lanes, setLanes] = useState([
-        { "title": "Lane 1", "bars": [
-            {"start" : "something", "end" : "something else"},
-            {"start" : "something", "end" : "something else"}
-        ] }
+        {
+            "title": "Lane 1", "bars": [
+                { "start": "something", "end": "something else" },
+                { "start": "something", "end": "something else" }
+            ]
+        }
     ]);
+    const blankNewLane = { "title": "Lane", "bars": [] };
+    const shakeBtnStyle = ["drageButtons", "shaking"].join(" ");
     const [dragging, setDragging] = useState(false);
     const whichAdd = useRef();
     const dragNode = useRef();
     const laneIndexAdd = useRef();
 
-    const addNewLane = (e) => {
+    // state manipulation 
+    const finalizeLane = (e) => {
         e.preventDefault();
         let len = lanes.length;
-        if (len === 0) {
-            setLanes([{ "title": "Lane 1", "bars": [] }]);
-            return;
-        } else {
-            let deepCopy = JSON.parse(JSON.stringify(lanes));
-            let newLane = JSON.parse(JSON.stringify(blankNewLane));
-            newLane["title"] +=  " " + (len + 1);
-            deepCopy.push(newLane);
-            setLanes(deepCopy);
-        }
+        let deepCopy = JSON.parse(JSON.stringify(lanes));
+        deepCopy.pop();
+        let newestLane = blankNewLane;
+        newestLane.title += " " + (len + 1);
+        deepCopy.push(newestLane);
+        setLanes(deepCopy);
     };
     const addNewBar = (e, params) => {
         console.log("AddingBar");
     };
 
 
+    // drag start functions
     const dragStartLane = (e) => {
-        e.preventDefault();
         console.log("starting drag for lane");
         whichAdd.current = "lane";
-        e.target.addEventListener('dragend', dragEndHandel);
+        dragNode.current = e.target;
+        dragNode.current.addEventListener('dragend', dragEndHandel);
         console.log(whichAdd.current, "start function");
         console.log(dragNode.current, "start function");
-        setDragging(true);
-    };
-    const dragEndHandel = (e, params) => {
-        console.log("ENDING DRAG");
-        console.log(whichAdd.current);
-        dragNode.current.removeEventListener('dragend', dragEndHandel);
-        if (whichAdd.current === "lane") {
-            addNewLane(e);
-        } else {
-            addNewBar(e, params);
-        }
-        setDragging(false);
-        whichAdd.current = null;
+        setTimeout(() => { setDragging(true); }, 0);
     };
     const dragStartBar = (e) => {
         e.preventDefault();
@@ -79,21 +68,67 @@ export default props => {
         setDragging(true);
     };
 
+    // drag enter functions
+    const ghostLaneHandel = e => {
+        console.log("GHOSTLANEHANDLE")
+        let deepCopy = JSON.parse(JSON.stringify(lanes));
+        deepCopy.push(blankNewLane);
+        setLanes(deepCopy);
+    };
+    const ghostBarHandle = e => {
+
+    };
+
+    // drag leave functions
+    const dissipateGhostLane = e => {
+        console.log("DISAPPATE");
+        let deepCopy = JSON.parse(JSON.stringify(lanes));
+        deepCopy.pop();
+        setLanes(deepCopy);
+    };
+
+
+    //drag end function
+    const dragEndHandel = (e, params) => {
+        console.log("ENDING DRAG");
+        console.log(whichAdd.current);
+        dragNode.current.removeEventListener('dragend', dragEndHandel);
+        if (whichAdd.current === "lane") {
+            finalizeLane(e);
+        } else {
+            addNewBar(e, params);
+        }
+        setDragging(false);
+        whichAdd.current = null;
+    };
+
+
 
     return (
         <div className="main">
-            <div draggable className="calenderArea">
+            <div className="calenderArea"
+                onDragEnter={dragging && whichAdd.current === "lane"
+                    ? e => ghostLaneHandel(e) : null}
+                onDragLeave={dragging && whichAdd.current === "lane"
+                    ? e => dissipateGhostLane(e) : null}
+            >
                 <CalenderHeaderMarkers arr={dates} />
                 {lanes.map((ele, ind) => (
-                    <Lane title={ele.title} dates={dates} bars={ele.bars} key={ind} />
+                    <Lane key={ind} title={ele.title} laneId={ind} dates={dates} bars={ele.bars}
+                        onDragEnter={dragging && whichAdd.current === "lane"
+                            ? e => ghostLaneHandel(e)
+                            : dragging && whichAdd.current === "bar" ? e => ghostBarHandle(e) : null}
+                    />
                 ))}
             </div>
             <div className="dragArea">
-                <div className="dragButtons" onClick={e => addNewLane(e)}>
+                <div className={dragging && whichAdd.current === "lane" ? shakeBtnStyle : "dragButtons"}
+                    draggable onDragStart={e => dragStartLane(e)} >
                     <div className="hamburger"></div>
                     <div>Add Lane</div>
                 </div>
-                <div className="dragButtons" onClick={e => addNewBar(e, { laneInd: 0 })}>
+                <div className={dragging && whichAdd.current === "bar" ? shakeBtnStyle : "dragButtons"}
+                    draggable onDragStart={e => dragStartBar(e)}>
                     <div className="hamburger"></div>
                     <div>Add Bar</div>
                 </div>
