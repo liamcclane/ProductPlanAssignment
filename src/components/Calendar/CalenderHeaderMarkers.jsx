@@ -2,6 +2,8 @@ import React from "react";
 
 import Marker from './Marker';
 
+import CSSClasses from './CalenderHeaderMarker.module.css';
+
 export default props => {
     const len = 100 / props.arr.length;
     return (
@@ -9,8 +11,9 @@ export default props => {
             {props.arr.map((marker, i) => (
                 <Marker key={i} flexWidth={len}>
                     {marker.quarterMarker
-                        ? <div>{marker.quarterMarker}<br />*</div>
-                        : "*"}
+                        ? marker.quarterMarker
+                        : ""}
+                    <br />*
                 </Marker>
             ))}
         </div>

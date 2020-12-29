@@ -8,9 +8,12 @@ export default props => {
         { "label": "Planing board", "isActive": false },
         { "label": "Parking lot", "isActive": false },
     ]);
+    const someStyle = {
+        borderBottom: "2px solid grey"
+    };
     return (
-        <>
-            <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <div style={someStyle}>
+            <nav style={someStyle} className="navbar navbar-expand-lg navbar-light bg-light border">
                 <div className="container-fluid">
                     <h1 className="navbar-brand">Product roadmap</h1>
                     <div className="" id="navbarText">
@@ -22,6 +25,6 @@ export default props => {
                     </div>
                 </div>
             </nav>
-        </>
+        </div>
     )
 };

@@ -1,12 +1,17 @@
+:root {
+    --dividerColor: 2px solid grey;
+}
 .brandBox {
-    border-right : 2px solid grey;
-    border-bottom : 2px solid grey;
     padding: 10px;
-    display: inline;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
 }
 .divider {
-    
+    border-left: var(--dividerColor);
+    margin-left: 10px;
+    padding-left: 10px;
 }
 .brandBox img {
-    width: 100px;
+    width: 40px;
 }

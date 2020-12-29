@@ -1,3 +1,10 @@
+:root {
+    --dimensions: 40px;
+    --ppOrange: #EF6031;
+    --ppLightGrey: #E4E6E8;
+    --ppBlue: #1973BA;
+    --ppBarLineColor: #ECEFF1;
+}
 .wrapper * {
     outline: 1px dotted red;
 }
@@ -14,14 +21,26 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: rgb(202, 240, 240);
+    padding-top: 20px;
 }
 .dragButtons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     margin: 10px;
+    background-color: var(--ppLightGrey);
+    padding: 10px;
+    width: 60%;
+}
+.hamburger {
+    width: var(--dimensions);
+    height: var(--dimensions);
+    background-color: rgb(73, 73, 73);
+    margin-right: 10px;
 }
 .lane {
     background-color: white;
-    min-height: 150px;
+    min-height: 50px;
     margin-bottom: 50px;
     margin-left: 40px;
     display: flex;
@@ -34,8 +53,4 @@
 .dropHere {
     text-align: center;
     border: 2px dotted black;
-}
-
-.laneHeader {
-    background-color: orange;
 }
