@@ -1,5 +1,6 @@
 :root {
     --dimensions: 40px;
+    --iconDimension: 20px;
     --ppOrange: #EF6031;
     --ppLightGrey: #E4E6E8;
     --ppBlue: #1973BA;
@@ -8,9 +9,13 @@
 .wrapper * {
     /* outline: 1px dotted red; */
 }
+.wrapper {
+    height: 100vh;
+}
 .main {
     display: flex;
     flex-direction: row;
+    height: inherit;
 }
 .calenderArea {
     background-color: rgb(163, 163, 163);
@@ -57,4 +62,8 @@
 }
 .shake {
     background-color: red;
+}
+.ex-icon {
+    height: var(--iconDimension);
+    width: var(--iconDimension);
 }

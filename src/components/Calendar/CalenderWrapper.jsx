@@ -1,7 +1,8 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 import CalenderHeaderMarkers from "./CalenderHeaderMarkers";
 import Lane from './Lane'
+import Instruction from "./Instruction";
 
 import DragIcon from "./../../static/images/add-icon.png";
 
@@ -21,13 +22,17 @@ export default props => {
         { "date": "2021-10", "quarterMarker": "Q4 2021" },
     ];
     const [lanes, setLanes] = useState([
-        {
-            "title": "Lane 1", "bars": [
-                { "start": "something", "end": "something else" },
-                { "start": "something", "end": "something else" }
-            ]
-        }
+        // {
+        //     "title": "Lane 1", "bars": [
+        //         { "start": "something", "end": "something else" },
+        //         { "start": "something", "end": "something else" }
+        //     ]
+        // }
     ]);
+    const [instructionalPanel, setInstructionalPanel] = useState({
+        isOpen: true,
+        instructions: "lane"
+    });
     const blankNewLane = { "title": "Lane", "bars": [] };
     const shakeBtnStyle = ["drageButtons", "shaking"].join(" ");
     const [dragging, setDragging] = useState(false);
@@ -35,7 +40,42 @@ export default props => {
     const dragNode = useRef();
     const laneIndexAdd = useRef();
 
-    // state manipulation 
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //         setInstructionalPanel({
+    //             isOpen: true,
+    //             instructions: "lane"
+    //         })
+    //     }, 2000);
+    // }, []);
+
+
+
+    // instructional panel functions
+    /**
+     * 
+     * @param {*} e 
+     */
+    const closePanel = e => {
+        setInstructionalPanel({ isOpen: false, instructions: "bar" });
+    };
+    /**
+     * 
+     * @param {*} e 
+     */
+    const setBarInstructions = e => {
+        e.preventDefault();
+        let old = instructionalPanel;
+        old.instructions = "bar";
+        old.isOpen = true;
+        setBarInstructions(old);
+    }
+
+    // state manipulation of lanes
+    /**
+     * 
+     * @param {*} e 
+     */
     const finalizeLane = (e) => {
         e.preventDefault();
         let len = lanes.length;
@@ -46,12 +86,25 @@ export default props => {
         deepCopy.push(newestLane);
         setLanes(deepCopy);
     };
+    /**
+     * 
+     * @param {*} e 
+     * @param {*} params 
+     */
     const addNewBar = (e, params) => {
         console.log("AddingBar");
     };
 
+    // 
+
+
+
 
     // drag start functions
+    /**
+     * 
+     * @param {event} e 
+     */
     const dragStartLane = (e) => {
         console.log("starting drag for lane");
         whichAdd.current = "lane";
@@ -61,6 +114,10 @@ export default props => {
         console.log(dragNode.current, "start function");
         setTimeout(() => { setDragging(true); }, 0);
     };
+    /**
+     * 
+     * @param {*} e 
+     */
     const dragStartBar = (e) => {
         e.preventDefault();
         whichAdd.current = "bar";
@@ -69,6 +126,10 @@ export default props => {
     };
 
     // drag enter functions
+    /**
+     * 
+     * @param {*} e 
+     */
     const ghostLaneHandel = e => {
         console.log("GHOSTLANEHANDLE")
         let deepCopy = JSON.parse(JSON.stringify(lanes));
@@ -80,6 +141,10 @@ export default props => {
     };
 
     // drag leave functions
+    /**
+     * 
+     * @param {*} e 
+     */
     const dissipateGhostLane = e => {
         console.log("DISAPPATE");
         let deepCopy = JSON.parse(JSON.stringify(lanes));
@@ -89,6 +154,11 @@ export default props => {
 
 
     //drag end function
+    /**
+     * 
+     * @param {*} e 
+     * @param {*} params 
+     */
     const dragEndHandel = (e, params) => {
         console.log("ENDING DRAG");
         console.log(whichAdd.current);
@@ -121,6 +191,10 @@ export default props => {
                     />
                 ))}
             </div>
+
+            {instructionalPanel.isOpen === true
+                ? <Instruction closePanel={closePanel} instructions={instructionalPanel.instructions} />
+                : ""}
             <div className="dragArea">
                 <div className={dragging && whichAdd.current === "lane" ? shakeBtnStyle : "dragButtons"}
                     draggable onDragStart={e => dragStartLane(e)} >
