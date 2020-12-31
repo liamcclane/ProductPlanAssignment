@@ -22,15 +22,15 @@ export default props => {
         { "date": "2021-10", "quarterMarker": "Q4 2021" },
     ];
     const [lanes, setLanes] = useState([
-        // {
-        //     "title": "Lane 1", "bars": [
-        //         { "start": "something", "end": "something else" },
-        //         { "start": "something", "end": "something else" }
-        //     ]
-        // }
+        {
+            "title": "Lane", "bars": [
+                { "start": "something", "end": "something else" },
+                { "start": "something", "end": "something else" }
+            ]
+        }
     ]);
     const [instructionalPanel, setInstructionalPanel] = useState({
-        isOpen: true,
+        isOpen: false,
         instructions: "lane"
     });
     const blankNewLane = { "title": "Lane", "bars": [] };
@@ -38,6 +38,7 @@ export default props => {
     const [dragging, setDragging] = useState(false);
     const whichAdd = useRef();
     const dragNode = useRef();
+    const holdLanes = useRef();
     const laneIndexAdd = useRef();
 
     // useEffect(() => {
@@ -56,8 +57,9 @@ export default props => {
      * 
      * @param {*} e 
      */
-    const closePanel = e => {
-        setInstructionalPanel({ isOpen: false, instructions: "bar" });
+    const closePanel = (e, moveTo) => {
+        e.preventDefault();
+        setInstructionalPanel({ isOpen: false, instructions: moveTo });
     };
     /**
      * 
@@ -83,8 +85,11 @@ export default props => {
         deepCopy.pop();
         let newestLane = blankNewLane;
         newestLane.title += " " + (len + 1);
-        deepCopy.push(newestLane);
-        setLanes(deepCopy);
+        holdLanes.current.push(newestLane);
+        console.log("hold lane");
+        console.log(holdLanes.current);
+        setLanes(holdLanes.current);
+        // holdLanes.current = null;
     };
     /**
      * 
@@ -109,6 +114,7 @@ export default props => {
         console.log("starting drag for lane");
         whichAdd.current = "lane";
         dragNode.current = e.target;
+        holdLanes.current =  JSON.parse(JSON.stringify(lanes));
         dragNode.current.addEventListener('dragend', dragEndHandel);
         console.log(whichAdd.current, "start function");
         console.log(dragNode.current, "start function");
@@ -169,6 +175,7 @@ export default props => {
             addNewBar(e, params);
         }
         setDragging(false);
+        holdLanes.current = null;
         whichAdd.current = null;
     };
 

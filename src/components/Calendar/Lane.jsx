@@ -8,9 +8,12 @@ export default ({ title, laneId, dates, bars, onDragEnter }) => {
     console.log("title", title);
     let content;
 
-    if (title === "lane") {
+    if (title === "Lane") {
+        console.log("HEREEEEEEEEEEE!!! outline lane");
         content = (<div className="lane dropHere">
-            Drop Here
+            <div>
+                Drop Here
+            </div>
         </div>);
     } else {
         content = (<div className="lane">

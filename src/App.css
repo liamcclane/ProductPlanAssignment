@@ -56,9 +56,14 @@
     display: flex;
 }
 .dropHere {
-    text-align: center;
     border: 2px dotted black;
-    background-color: black;
+    min-height: 150px;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    justify-content: center;
+    background-color: #E4E6E8;
+    margin-right: 20px;
 }
 .shake {
     background-color: red;

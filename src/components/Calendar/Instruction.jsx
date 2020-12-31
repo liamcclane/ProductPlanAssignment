@@ -37,7 +37,7 @@ export default ({ closePanel, children, instructions }) => {
             <p>Once they''re added you can share out your roadmap with your team</p>
         </>
     );
-    let content;
+    let content, moveTo;
     // switch instructions:
     //     case "lane":
     //         content = laneInstructions;
@@ -45,9 +45,11 @@ export default ({ closePanel, children, instructions }) => {
     switch (instructions) {
         case "lane":
             content = laneInstructions;
+            moveTo = "bar";
             break;
         case "bar":
             content = barInstructions;
+            moveTo = "last";
             break;
         default:
             content = lastInstruction;
@@ -62,7 +64,7 @@ export default ({ closePanel, children, instructions }) => {
                     <img className="ex-icon" src={EX}></img>
                 </div>
                 {content}
-                <div className="btn btn-primary" onClick={e => closePanel(e)} >Got iT</div>
+                <div className="btn btn-primary" onClick={e => closePanel(e, moveTo)} >Got iT</div>
             </div>
             <div className={CSSClasses.triangleRight}></div>
         </div>
