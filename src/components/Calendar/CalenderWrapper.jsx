@@ -23,7 +23,7 @@ export default props => {
     ];
     const [lanes, setLanes] = useState([
         // {
-        //     "title": "Lane", "bars": [
+        //     "title": "Lane 1", "bars": [
         //         { "start": "something", "end": "something else" },
         //         { "start": "something", "end": "something else" }
         //     ]

@@ -39,17 +39,6 @@ export default ({ changePanelIsOpen, instructions }) => {
     );
     let content;
     console.log("instructions in instructions.jsx =>", instructions);
-    // switch (instructions) {
-    //     case "lane":
-    //         content = laneInstructions;
-    //         break;
-    //     case "bar":
-    //         content = barInstructions;
-    //         break;
-    //     default:
-    //         content = lastInstruction;
-    //         break;
-    // };
     if (instructions === "lane") {
         content = laneInstructions;
     } else if (instructions == "bar") {
