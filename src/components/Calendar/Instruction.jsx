@@ -8,7 +8,7 @@ import EX from './../../static/images/ex-icon.png';
 
 
 
-export default ({ closePanel, children, instructions }) => {
+export default ({ changePanelIsOpen, instructions }) => {
     // console.log();
     const laneInstructions = (
         <>
@@ -37,34 +37,36 @@ export default ({ closePanel, children, instructions }) => {
             <p>Once they''re added you can share out your roadmap with your team</p>
         </>
     );
-    let content, moveTo;
-    // switch instructions:
+    let content;
+    console.log("instructions in instructions.jsx =>", instructions);
+    // switch (instructions) {
     //     case "lane":
     //         content = laneInstructions;
     //         break;
-    switch (instructions) {
-        case "lane":
-            content = laneInstructions;
-            moveTo = "bar";
-            break;
-        case "bar":
-            content = barInstructions;
-            moveTo = "last";
-            break;
-        default:
-            content = lastInstruction;
-            break;
-    };
+    //     case "bar":
+    //         content = barInstructions;
+    //         break;
+    //     default:
+    //         content = lastInstruction;
+    //         break;
+    // };
+    if (instructions === "lane") {
+        content = laneInstructions;
+    } else if (instructions == "bar") {
+        content = barInstructions;
+    } else {
+        content = lastInstruction;
+    }
 
 
     return (
         <div className={CSSClasses.overlay}>
             <div id={CSSClasses.text}>
                 <div className={CSSClasses.iconWrapper}>
-                    <img className="ex-icon" src={EX}></img>
+                    <img onClick={e => changePanelIsOpen(e, false)} className="ex-icon" src={EX}></img>
                 </div>
                 {content}
-                <div className="btn btn-primary" onClick={e => closePanel(e, moveTo)} >Got iT</div>
+                <div className="btn btn-primary" onClick={e => changePanelIsOpen(e, false)} >Got iT</div>
             </div>
             <div className={CSSClasses.triangleRight}></div>
         </div>

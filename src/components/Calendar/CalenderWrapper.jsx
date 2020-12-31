@@ -22,12 +22,12 @@ export default props => {
         { "date": "2021-10", "quarterMarker": "Q4 2021" },
     ];
     const [lanes, setLanes] = useState([
-        {
-            "title": "Lane", "bars": [
-                { "start": "something", "end": "something else" },
-                { "start": "something", "end": "something else" }
-            ]
-        }
+        // {
+        //     "title": "Lane", "bars": [
+        //         { "start": "something", "end": "something else" },
+        //         { "start": "something", "end": "something else" }
+        //     ]
+        // }
     ]);
     const [instructionalPanel, setInstructionalPanel] = useState({
         isOpen: false,
@@ -41,14 +41,14 @@ export default props => {
     const holdLanes = useRef();
     const laneIndexAdd = useRef();
 
-    // useEffect(() => {
-    //     setTimeout(() => {
-    //         setInstructionalPanel({
-    //             isOpen: true,
-    //             instructions: "lane"
-    //         })
-    //     }, 2000);
-    // }, []);
+    useEffect(() => {
+        setTimeout(() => {
+            setInstructionalPanel({
+                isOpen: true,
+                instructions: "lane"
+            })
+        }, 2000);
+    }, []);
 
 
 
@@ -57,20 +57,18 @@ export default props => {
      * 
      * @param {*} e 
      */
-    const closePanel = (e, moveTo) => {
+    const changePanelIsOpen = (e, isOpen) => {
         e.preventDefault();
-        setInstructionalPanel({ isOpen: false, instructions: moveTo });
+        let old = instructionalPanel.instructions;
+        setInstructionalPanel({ isOpen: isOpen , instructions: old});
     };
     /**
      * 
      * @param {*} e 
      */
-    const setBarInstructions = e => {
+    const setBarInstructionsPanel = e => {
         e.preventDefault();
-        let old = instructionalPanel;
-        old.instructions = "bar";
-        old.isOpen = true;
-        setBarInstructions(old);
+        setInstructionalPanel({isOpen : true, instructions: "bar"});
     }
 
     // state manipulation of lanes
@@ -89,7 +87,6 @@ export default props => {
         console.log("hold lane");
         console.log(holdLanes.current);
         setLanes(holdLanes.current);
-        // holdLanes.current = null;
     };
     /**
      * 
@@ -177,6 +174,12 @@ export default props => {
         setDragging(false);
         holdLanes.current = null;
         whichAdd.current = null;
+        if(instructionalPanel.isOpen === false && instructionalPanel.instructions === "lane") {
+            console.log(instructionalPanel," line 187");
+            setTimeout(() => {
+                setBarInstructionsPanel(e);
+            }, 1000);
+        }
     };
 
 
@@ -200,7 +203,7 @@ export default props => {
             </div>
 
             {instructionalPanel.isOpen === true
-                ? <Instruction closePanel={closePanel} instructions={instructionalPanel.instructions} />
+                ? <Instruction changePanelIsOpen={changePanelIsOpen} instructions={instructionalPanel.instructions} />
                 : ""}
             <div className="dragArea">
                 <div className={dragging && whichAdd.current === "lane" ? shakeBtnStyle : "dragButtons"}
