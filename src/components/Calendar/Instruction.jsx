@@ -9,7 +9,6 @@ import EX from './../../static/images/ex-icon.png';
 
 
 export default ({ changePanelIsOpen, instructions }) => {
-    // console.log();
     const laneInstructions = (
         <>
             <img className={CSSClasses.centerImg} src={LaneImg}></img>
@@ -38,7 +37,7 @@ export default ({ changePanelIsOpen, instructions }) => {
         </>
     );
     let content;
-    console.log("instructions in instructions.jsx =>", instructions);
+    // console.log("instructions in instructions.jsx =>", instructions);
     if (instructions === "lane") {
         content = laneInstructions;
     } else if (instructions == "bar") {
@@ -46,8 +45,7 @@ export default ({ changePanelIsOpen, instructions }) => {
     } else {
         content = lastInstruction;
     }
-
-
+    
     return (
         <div className={CSSClasses.overlay}>
             <div id={CSSClasses.text}>

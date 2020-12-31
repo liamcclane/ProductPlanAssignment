@@ -41,14 +41,14 @@ export default props => {
     const holdLanes = useRef();
     const laneIndexAdd = useRef();
 
-    useEffect(() => {
-        setTimeout(() => {
-            setInstructionalPanel({
-                isOpen: true,
-                instructions: "lane"
-            })
-        }, 2000);
-    }, []);
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //         setInstructionalPanel({
+    //             isOpen: true,
+    //             instructions: "lane"
+    //         })
+    //     }, 2000);
+    // }, []);
 
 
 
@@ -69,7 +69,16 @@ export default props => {
     const setBarInstructionsPanel = e => {
         e.preventDefault();
         setInstructionalPanel({isOpen : true, instructions: "bar"});
-    }
+    };
+    /**
+     * 
+     * @param {*} e 
+     */
+    const setLastInstructionsPanel = e => {
+        e.preventDefault();
+        setInstructionalPanel({isOpen : true, instructions: "last"});
+    };
+    
 
     // state manipulation of lanes
     /**
@@ -84,8 +93,8 @@ export default props => {
         let newestLane = blankNewLane;
         newestLane.title += " " + (len + 1);
         holdLanes.current.push(newestLane);
-        console.log("hold lane");
-        console.log(holdLanes.current);
+        // console.log("hold lane");
+        // console.log(holdLanes.current);
         setLanes(holdLanes.current);
     };
     /**
@@ -94,11 +103,8 @@ export default props => {
      * @param {*} params 
      */
     const addNewBar = (e, params) => {
-        console.log("AddingBar");
+        // console.log("AddingBar");
     };
-
-    // 
-
 
 
 
@@ -108,13 +114,13 @@ export default props => {
      * @param {event} e 
      */
     const dragStartLane = (e) => {
-        console.log("starting drag for lane");
+        // console.log("starting drag for lane");
         whichAdd.current = "lane";
         dragNode.current = e.target;
         holdLanes.current =  JSON.parse(JSON.stringify(lanes));
         dragNode.current.addEventListener('dragend', dragEndHandel);
-        console.log(whichAdd.current, "start function");
-        console.log(dragNode.current, "start function");
+        // console.log(whichAdd.current, "start function");
+        // console.log(dragNode.current, "start function");
         setTimeout(() => { setDragging(true); }, 0);
     };
     /**
@@ -123,9 +129,12 @@ export default props => {
      */
     const dragStartBar = (e) => {
         e.preventDefault();
-        whichAdd.current = "bar";
         console.log("starting drag for BARR");
-        setDragging(true);
+        whichAdd.current = "bar";
+        dragNode.current = e.target;
+        holdLanes.current =  JSON.parse(JSON.stringify(lanes));
+        dragNode.current.addEventListener('dragend', dragEndHandel);
+        setTimeout(() => { setDragging(true); }, 0);
     };
 
     // drag enter functions
@@ -134,13 +143,17 @@ export default props => {
      * @param {*} e 
      */
     const ghostLaneHandel = e => {
-        console.log("GHOSTLANEHANDLE")
+        // console.log("GHOSTLANEHANDLE")
         let deepCopy = JSON.parse(JSON.stringify(lanes));
         deepCopy.push(blankNewLane);
         setLanes(deepCopy);
     };
-    const ghostBarHandle = e => {
-
+    const ghostBarHandle = (e, params) => {
+        console.log("e.target GHOST BAR FUNCTION");
+        console.log(e.target);
+        let deepCopy = JSON.parse(JSON.stringify(lanes));
+        deepCopy[params.laneId]["bars"].push({ "start": "something", "end": "something else" });
+        setLanes(deepCopy);
     };
 
     // drag leave functions
@@ -149,7 +162,7 @@ export default props => {
      * @param {*} e 
      */
     const dissipateGhostLane = e => {
-        console.log("DISAPPATE");
+        // console.log("DISAPPATE");
         let deepCopy = JSON.parse(JSON.stringify(lanes));
         deepCopy.pop();
         setLanes(deepCopy);
@@ -163,8 +176,8 @@ export default props => {
      * @param {*} params 
      */
     const dragEndHandel = (e, params) => {
-        console.log("ENDING DRAG");
-        console.log(whichAdd.current);
+        // console.log("ENDING DRAG");
+        // console.log(whichAdd.current);
         dragNode.current.removeEventListener('dragend', dragEndHandel);
         if (whichAdd.current === "lane") {
             finalizeLane(e);
@@ -175,9 +188,13 @@ export default props => {
         holdLanes.current = null;
         whichAdd.current = null;
         if(instructionalPanel.isOpen === false && instructionalPanel.instructions === "lane") {
-            console.log(instructionalPanel," line 187");
+            // console.log(instructionalPanel," line 187");
             setTimeout(() => {
                 setBarInstructionsPanel(e);
+            }, 1000);
+        } else if (instructionalPanel.isOpen === false && instructionalPanel === "bar") {
+            setTimeout(() => {
+                setLastInstructionsPanel(e);
             }, 1000);
         }
     };
@@ -188,16 +205,19 @@ export default props => {
         <div className="main">
             <div className="calenderArea"
                 onDragEnter={dragging && whichAdd.current === "lane"
-                    ? e => ghostLaneHandel(e) : null}
+                    ? e => ghostLaneHandel(e) 
+                    : dragging && whichAdd.current === "bar" 
+                        ? e => ghostBarHandle(e, {laneId :0}) :null}
                 onDragLeave={dragging && whichAdd.current === "lane"
-                    ? e => dissipateGhostLane(e) : null}
+                    ? e => dissipateGhostLane(e) 
+                    : null}
             >
                 <CalenderHeaderMarkers arr={dates} />
                 {lanes.map((ele, ind) => (
                     <Lane key={ind} title={ele.title} laneId={ind} dates={dates} bars={ele.bars}
                         onDragEnter={dragging && whichAdd.current === "lane"
                             ? e => ghostLaneHandel(e)
-                            : dragging && whichAdd.current === "bar" ? e => ghostBarHandle(e) : null}
+                            : dragging && whichAdd.current === "bar" ? e => ghostBarHandle(e, { laneId : ind}) : null}
                     />
                 ))}
             </div>

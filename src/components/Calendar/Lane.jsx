@@ -5,11 +5,13 @@ import CSSClasses from './Lane.module.css';
 
 export default ({ title, laneId, dates, bars, onDragEnter }) => {
 
-    console.log("title", title);
+    // console.log("title", title);
+    console.log("onDragEnter");
+    console.log(onDragEnter !== null ? onDragEnter : "this is null")
     let content;
 
     if (title === "Lane") {
-        console.log("HEREEEEEEEEEEE!!! outline lane");
+        // console.log("HEREEEEEEEEEEE!!! outline lane");
         content = (<div className="lane dropHere">
             <div>
                 Drop Here
