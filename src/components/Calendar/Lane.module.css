@@ -12,6 +12,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    border-top-left-radius: 1em;
 }
 .barWrapper {
     position: relative;
@@ -26,7 +27,8 @@
     height: 100%;
 }
 .dateMarker {
-    border-left: 3px solid var(--ppBarLineColor);
+    border-left: 3px solid rgb(219, 219, 219);
+    /* border-left: 3px solid green; */
     height: 100%;
 }
 .overBars {
