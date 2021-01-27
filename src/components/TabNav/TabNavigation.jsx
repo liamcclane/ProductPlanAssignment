@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import Tab from "./Tab";
 
 export default props => {
-    const [navItems, setNavItems] = useState([
+    const navItems = [
         { "label": "Roadmap", "isActive": true },
         { "label": "Planing board", "isActive": false },
         { "label": "Parking lot", "isActive": false },
-    ]);
+    ];
     const someStyle = {
         borderBottom: "2px solid grey"
     };

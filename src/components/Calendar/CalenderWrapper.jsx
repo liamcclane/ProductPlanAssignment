@@ -3,7 +3,6 @@ import React, { useState, useRef, useEffect } from "react";
 import CalenderHeaderMarkers from "./CalenderHeaderMarkers";
 import Lane from './Lane'
 import Instruction from "./Instruction";
-import DragIcon from "./../../static/images/add-icon.png";
 
 export default props => {
     const dates = [
@@ -23,8 +22,7 @@ export default props => {
     const [lanes, setLanes] = useState([
         // {
         //     "title": "Lane 1", "bars": [
-        //         // { "start": "something", "end": "something else" },
-        //         // { "start": "something", "end": "something else" }
+        //         { "start": "something", "end": "something else" }
         //     ]
         // }
     ]);
@@ -86,14 +84,11 @@ export default props => {
      * @param {event} e 
      */
     const dragStartLane = (e) => {
-        // console.log("starting drag for lane");
         whichAdd.current = "lane";
         dragNode.current = e.target;
         holdLanes.current = JSON.parse(JSON.stringify(lanes));
         dragNode.current.addEventListener('dragend', dragEndHandel);
         setDragging(true); 
-        // setTimeout(() => { 
-        // }, 0);
     };
     /**
      * 
@@ -190,7 +185,7 @@ export default props => {
         if(laneIndexAdd.current === undefined || laneIndexAdd.current === null ) {
             return;
         }
-        holdLanes.current[laneIndexAdd.current].bars.push({ "start": "something", "end": "something else" });
+        holdLanes.current[laneIndexAdd.current].bars.push({ "start": "notstage", "end": "something" });
         console.log("******holdLanes.current AFTER*******");
         console.log(holdLanes.current);
         setLanes(holdLanes.current);
@@ -231,6 +226,23 @@ export default props => {
     };
 
 
+    /**
+     * Editing state for titles
+     */
+    const changeTitle = (laneIndex, newTitle) => {
+        setLanes(lanes.map((ele, i) => (
+            i === laneIndex 
+            ? {title: newTitle, bars: ele.bars}
+            : ele
+        )));
+    };
+    const deleteLane = (e, laneId) => {
+        e.preventDefault();
+        let l = lanes.map(ele => ele);
+        l.splice(laneId,1);
+        setLanes(l);
+    };
+
 
     return (
         <div className="main">
@@ -242,7 +254,9 @@ export default props => {
             >
                 <CalenderHeaderMarkers arr={dates} />
                 {lanes.map((ele, ind) => (
-                    <Lane key={ind} title={ele.title} laneId={ind} dates={dates} bars={ele.bars}
+                    <Lane key={ind} title={ele.title} laneId={ind} 
+                        dates={dates} bars={ele.bars}
+                        changeTitle={changeTitle} deleteLane={deleteLane}
                         dragEnterFunction={dragging && whichAdd.current === "bar"
                             ? ghostBarHandle : null}
                         dragLeaveFunction={dragging && whichAdd.current === "bar"

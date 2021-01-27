@@ -8,15 +8,17 @@
 }
 .laneHeader {
     background-color: var(--ppOrange);
-    padding: 5px;
+    padding: 0.5em;
     display: flex;
-    flex-direction: row;
-    align-items: center;
+    justify-content: space-between;
     border-top-left-radius: 1em;
+}
+.laneHeaderLeft {
+    display: flex;
 }
 .barWrapper {
     position: relative;
-    height: 50%;
+    /* outline: 4px dotted purple; */
 }
 .underBars {
     /* z-index: 2; */
@@ -25,21 +27,27 @@
     margin-left: 20px;
     min-height: 100px;
     height: 100%;
+    /* outline: 4px dotted green; */
 }
 .dateMarker {
     border-left: 3px solid rgb(219, 219, 219);
-    /* border-left: 3px solid green; */
     height: 100%;
 }
 .overBars {
     position: absolute;
     top: 0;
     z-index: 20;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    padding-left: 20px;
+    /* outline: 1px dotted red; */
 }
 .bar {
     background-color: var(--ppBlue);
     color: white;
     display: inline-block;
     margin: 5px;
-    border-radius: 0.5em;;
+    border-radius: 0.5em;
+    text-align: center;
 }
